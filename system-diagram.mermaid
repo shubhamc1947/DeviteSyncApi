@@ -1,0 +1,26 @@
+graph TD
+    subgraph "Client Devices"
+        A[PiBook Device] -->|Sync Data| D
+        B[PiBox Device] -->|Sync Data| D
+        C[Other Devices] -->|Sync Data| D
+    end
+
+    subgraph "PiSync Backend"
+        D[PiSync Service] -->|Store Data| E[PostgreSQL Database]
+        D -->|Log Events| F[Error Logs]
+    end
+
+    subgraph "Admin Dashboard"
+        G[React Frontend] -->|API Requests| H[Express Backend]
+        H -->|Query Data| E
+    end
+
+    subgraph "API Endpoints"
+        H --> I[Device Management API]
+        H --> J[Sync Management API]
+        H --> K[Error Log API]
+    end
+
+    D -->|Status Updates| L[Device Status Table]
+    L -->|Monitor| G
+    F -->|View| G
