@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "a5c0debe-db12-46a8-a8f4-716dc3854a6b",
+		"name": "PiSync API Collection",
+		"description": "Postman collection for testing the full PiSync backend API flow.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "35044707"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user1\",\n    \"email\": \"user1@example.com\",\n    \"password\": \"userpass\",\n    \"role\": \"user\"\n}"
+						},
+						"url": "{{base_url}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user1@example.com\",\n    \"password\": \"user1pass\"\n}"
+						},
+						"url": "{{base_url}}/auth/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "Devices - Create Device",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2NGUzYThiLWYyYzgtNGY4YS04ZjljLWE5YzkxNTcxMWZiNSIsInVzZXJuYW1lIjoidXNlcjEiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0NzQ2NTAyMywiZXhwIjoxNzQ3NTUxNDIzfQ._Peq0jGcOdwFa5iqp3c_hEehUxEHKDbVx_AjzB8ekyQ"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": \"device-001\",\n    \"deviceName\": \"Sensor A1\",\n    \"location\": \"Factory Floor\",\n    \"userId\": \"f64e3a8b-f2c8-4f8a-8f9c-a9c915711fb5\"\n}"
+						},
+						"url": "{{base_url}}/devices"
+					},
+					"response": []
+				},
+				{
+					"name": "Devices - Get All Devices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": "{{base_url}}/devices"
+					},
+					"response": []
+				},
+				{
+					"name": "Devices - Get Device by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/api/devices/{{id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Devices - Get Devices With Failures",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/api/devices/failures"
+					},
+					"response": []
+				},
+				{
+					"name": "Devices - Get Device by deviceId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/api/devices/by-device-id/{{deviceId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Devices - Update Device",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deviceName\": \"Updated Device\",\n  \"location\": \"Home\"\n}"
+						},
+						"url": "http://localhost:3000/api/devices/{{id}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sync",
+			"item": [
+				{
+					"name": "Sync My Device",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"force\": true,        \r\n  \"syncType\": \"FULL\"    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/sync/user/{{deviceId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Sync Logs for a Device (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": "{{base_url}}/sync/admin/{{deviceId}}/logs"
+					},
+					"response": []
+				},
+				{
+					"name": "View Sync Error (Admin)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2NGUzYThiLWYyYzgtNGY4YS04ZjljLWE5YzkxNTcxMWZiNSIsInVzZXJuYW1lIjoidXNlcjEiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0NzQ2NjU2MiwiZXhwIjoxNzQ3NTUyOTYyfQ.rpNBpFSxTko99dH6nSW9Nqocsartqi9rDmXMyogezxw"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/sync/admin/errors"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/api"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
